@@ -1,0 +1,30 @@
+{
+  "name": "soil",
+  "version": "0.0.1",
+  "description": "a secure framework to build web projects with scalability and performance in mind",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpattis/soil.git"
+  },
+  "keywords": [
+    "framework",
+    "web",
+    "secure",
+    "scalable"
+  ],
+  "author": "Florian Pattis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fpattis/soil/issues"
+  },
+  "homepage": "https://github.com/fpattis/soil#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "type": "module"
+}
