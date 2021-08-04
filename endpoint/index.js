@@ -1,5 +1,9 @@
 import {logError} from '../logging';
 
+const DEFAULT_ERROR_FN = (e) => {
+	throw e;
+};
+
 /**
  * @typedef { import("../config").Config } Config
  */
@@ -51,12 +55,12 @@ import {logError} from '../logging';
 export async function protect(
 	fn,
 	jsonSchema,
-	allowedUserGroups = [],
-	config = undefined,
+	allowedUserGroups,
+	config,
 ) {
-	return wrapper(async (validatedData, token) => {
+	return await wrapper(async (validatedData, token, ...args) => {
 		// authentication and authorization
-		return await fn(validatedData, user);
+		return await fn(validatedData, user, ...args);
 	}, jsonSchema, config);
 }
 
@@ -68,8 +72,8 @@ export async function protect(
  * @param {Config} config
  * @return {ExecuteBusinessLogic}
  */
-export async function unprotected(fn, jsonSchema, config = undefined) {
-	return wrapper(fn, jsonSchema, config);
+export async function wrap(fn, jsonSchema, config) {
+	return await wrapper(fn, jsonSchema, config);
 }
 
 /**
@@ -79,15 +83,16 @@ export async function unprotected(fn, jsonSchema, config = undefined) {
  * @param {Config} config
  * @return {Function<Promsise<Any>>}
  */
-async function wrapper(fn, jsonSchema, config = undefined) {
-	// TODO: call validation https://ajv.js.org/guide/why-ajv.html
+async function wrapper(fn, jsonSchema, config) {
+	const validate = await config.getValidationFn(jsonSchema);
+	const errorHandlerFn = config.errorHandlerFn || DEFAULT_ERROR_FN;
 	return async (...args) => {
 		try {
 			args[0] = await validate(args[0]);
 			return await fn(...args);
 		} catch (e) {
 			logError(e, config);
-			throw e;
+			await errorHandlerFn(e, ...args);
 		}
 	};
 }
