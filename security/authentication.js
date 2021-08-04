@@ -12,6 +12,7 @@ export const CACHE_PREFIX_USER_AUTHENTICATION_SESSIONS = 'USER_AUTH_S_';
  * @callback AuthenticatedUser
  * @param {String} token
  * @param {Object} validatedData
+ * @param {Array<Any>} additionalData
  * @returns {Promise<User | null>} user object
  */
 

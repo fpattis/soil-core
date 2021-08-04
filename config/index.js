@@ -12,6 +12,7 @@
  * @property {Number} cryptoTokenLength the length of secure tokens in bytes
  * @property {GetValidationFn} getValidationFn returns a function that validates a schema
  * @property {import("../security/authentication").AuthenticatedUser} authenticateUserFn
+ * @property {import("../security/authorization").AuthorizeUser} authorizeUserFn
  *
  * //localization
  * @property {GetTranslationFn} getTranslationFn function returns a function that handles the translation
@@ -117,7 +118,8 @@ export const defaultConfig = {
 	// security
 	cryptoTokenLength: 256,
 	getValidationFn: undefined, // required
-	authenticateUserFn: undefined, // default result of ./security/authorization.js@authenticateUserFn
+	authenticateUserFn: undefined, // default result of ./security/authentication.js@authenticateUserFn
+	authorizeUserFn: undefined, // default result of ./security/authentication.js@getAuthorizeFn
 	// cache
 	storeInCacheFn: undefined, // required
 	readFromCacheFn: undefined, // required
