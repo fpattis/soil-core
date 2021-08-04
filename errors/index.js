@@ -1,27 +1,49 @@
-import {logError} from '../logging';
+
+
+export const ERROR_CODES = {
+	UNAUTHORIZED: {
+		code: 'UNAUTHORIZED',
+		httpStatusCode: 401,
+	},
+	BAD_REQUEST: {
+		code: 'BAD_REQUEST',
+		httpStatusCode: 400,
+	},
+};
+
+/**
+ * @typedef ErrorCode
+ * @property {String} code a unique identifier that never changes
+ * @property {Number} httpStatusCode a corresponding http status code
+ */
 
 /**
  * @typedef ErrorExtension
- * @property {Any} code
  * @property {Boolean} isHandled
+ * @property {String | undefined} translationKey
 */
 
 /**
- * @typedef {Error & ErrorExtension} SoilError
+ * @typedef {Error & ErrorExtension & ErrorCode} SoilError
  */
 
 /**
  * creates a new error object
  * @param {String} message the error message
- * @param {*} code a code that uniquely identifies an error
+ * @param {ErrorCode} code a code that uniquely identifies an error
  * @param {Boolean} isHandled when used with the error wrapper an
- * unhandled error will be rethrown after being logged
+ * unhandled error will be re-thrown after being logged
+ * @param {String} translationKey key that can be used for translation
  * @return {SoilError}
  */
-export function create(message, code, isHandled = false) {
+export function create(message, code, isHandled = false, translationKey = undefined) {
 	/** @type {SoilError} */
 	const error = new Error(message);
-	error.code = code;
+	error.code = code.code;
+	error.httpStatusCode = code.httpStatusCode;
 	error.isHandled = isHandled;
+	if (translationKey) {
+		error.translationKey = translationKey;
+	}
 	return error;
 }

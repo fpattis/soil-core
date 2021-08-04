@@ -1,5 +1,3 @@
-import {logError} from '../logging';
-
 const DEFAULT_ERROR_FN = (e) => {
 	throw e;
 };
@@ -44,7 +42,7 @@ const DEFAULT_ERROR_FN = (e) => {
  * called from your endpoints, returns a function that shall be called with
  * the unparsed string data arriving over the wire and a string token as second
  * parameter
- * @param {ProtectedBusinessLogic} fn your business logic, recieves the
+ * @param {ProtectedBusinessLogic} fn your business logic, receives the
  * validated data object as first argument and your user object as second
  * argument
  * @param {Object} jsonSchema
@@ -58,14 +56,18 @@ export async function protect(
 	allowedUserGroups,
 	config,
 ) {
+	const authenticate = config.authenticateUserFn;
+	const authorize = config.authorizeUserFn;
 	return await wrapper(async (validatedData, token, ...args) => {
-		// authentication and authorization
-		return await fn(validatedData, user, ...args);
+		const user = await authenticate(token, validatedData, ...args);
+		user.token = token;
+		const authorizationData = await authorize(user, allowedUserGroups, validatedData, ...args);
+		return await fn(validatedData, user, authorizationData, ...args);
 	}, jsonSchema, config);
 }
 
 /**
- * returns a function that recieves the raw data from your endpoint, parses,
+ * returns a function that receives the raw data from your endpoint, parses,
  * validates it and calls your business logic
  * @param {BusinessLogic} fn
  * @param {Object} jsonSchema
@@ -81,17 +83,18 @@ export async function wrap(fn, jsonSchema, config) {
  * @param {Function} fn function to call after validation
  * @param {Object} jsonSchema
  * @param {Config} config
- * @return {Function<Promsise<Any>>}
+ * @return {Function<Promise<Any>>}
  */
 async function wrapper(fn, jsonSchema, config) {
-	const validate = await config.getValidationFn(jsonSchema);
+	const validate = await config.getValidationFn(jsonSchema, config);
 	const errorHandlerFn = config.errorHandlerFn || DEFAULT_ERROR_FN;
+	const errorLogFn = config.errorLogFn;
 	return async (...args) => {
 		try {
 			args[0] = await validate(args[0]);
 			return await fn(...args);
 		} catch (e) {
-			logError(e, config);
+			errorLogFn(e, config);
 			await errorHandlerFn(e, ...args);
 		}
 	};

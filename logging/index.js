@@ -13,9 +13,5 @@ export async function logError(error, config) {
 	if (config?.isLogHandledErrors === false && error.isHandled) {
 		return;
 	}
-	if (config?.errorLogFn) {
-		config.errorLogFn(error);
-		return;
-	}
 	console.error(error);
 }

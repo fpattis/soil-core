@@ -9,17 +9,29 @@
  * @property {ErrorHandlerFn} errorHandlerFn gets when an error occurs in an endpoint/index.js function
  *
  * //security
- * @property {Number} cryptoTokenLength the lenght of secure tokens in bytes
+ * @property {Number} cryptoTokenLength the length of secure tokens in bytes
  * @property {GetValidationFn} getValidationFn returns a function that validates a schema
+ * @property {import("../security/authentication").AuthenticatedUser} authenticateUserFn
+ *
+ * //localization
+ * @property {GetTranslationFn} getTranslationFn function returns a function that handles the translation
+ *
+ * //cache
+ * @property {StoreInCacheFn} storeInCacheFn a function that stores data in your cache
+ * @property {ReadFromCacheFn} readFromCacheFn a function that reads data in from your cache
+ * @property {DeleteFromCacheFn} deleteFromCacheFn a function that deletes data from your cache
  */
 
 /**
  * @typedef {import('../errors').SoilError} SoilError
  */
 
+// security
+
 /**
  * @callback GetValidationFn
  * @param {Object} schema a schema object that defines the validation work
+ * @param {Config} config the application config
  * @return {Promise<ValidateFn>} the function that validates the data
  */
 
@@ -28,6 +40,8 @@
  * @param {Object} data the data  to validate
  * @return {Promise<Object>} the validated data
  */
+
+// logging
 
 /**
  * @callback ErrorLogFn this function shall not throw an error
@@ -46,6 +60,8 @@
  * @param {Any} args any number of additional arguments passed to the calling function that failed
  */
 
+// localization
+
 /**
  * @callback GetTranslationFn
  * @param {Object} translations the translations object, first level keys are the language codes
@@ -61,10 +77,38 @@
  * @param {String} languageCode the language for the code we are looking for
  */
 
+// cache
+
+/**
+ * @callback ReadFromCacheFn shall deserialized JSON or other formats properly before returning
+ * @param {String} cachePrefix the cache prefix or collection name
+ * @param {String | Object} key the key of the value to read
+ * @param {Config} config the applications config object
+ * @returns {Promise<Object | Array>}
+ */
+
+/**
+ * @callback DeleteFromCacheFn shall delete a key from cache
+ * @param {String} cachePrefix the cache prefix or collection name
+ * @param {String | Object} key the key of the value to read
+ * @param {Config} config the applications config object
+ * @returns {Promise}
+ */
+
+/**
+ * @callback StoreInCacheFn
+ * @param {String} cachePrefix the cache prefix or collection name
+ * @param {String | Object} key the key of the value to read
+ * @param {Any} value the value to store for the given key
+ * @param {Config} config the applications config object
+ * @returns {Promise}
+ */
+
+/** @type {Config} */
 export const defaultConfig = {
 	// logging
 	isLogHandledErrors: true,
-	errorLogFn: undefined, // console.error is default
+	errorLogFn: undefined, // default ./logging/index.js@logError
 	errorHandlerFn: (e) => {
 		throw e;
 	},
@@ -73,4 +117,9 @@ export const defaultConfig = {
 	// security
 	cryptoTokenLength: 256,
 	getValidationFn: undefined, // required
+	authenticateUserFn: undefined, // default result of ./security/authorization.js@authenticateUserFn
+	// cache
+	storeInCacheFn: undefined, // required
+	readFromCacheFn: undefined, // required
+	deleteFromCacheFn: undefined, // required
 };
