@@ -1,3 +1,7 @@
+import * as authentication from '../security/authentication';
+import * as authorization from '../security/authorization';
+import * as logging from '../logging';
+import * as validation from '../security/validation';
 
 /**
  * @typedef Config
@@ -25,6 +29,7 @@
 
 /**
  * @typedef {import('../errors').SoilError} SoilError
+ * @typedef {import('../security/validation').Schema} Schema
  */
 
 // security
@@ -105,8 +110,34 @@
  * @returns {Promise}
  */
 
+/** @type {Schema} */
+const CONFIG_SCHEMA = {
+	'errorLogFn': {
+		type: 'function',
+	},
+	'getValidationFn': {
+		type: 'function',
+	},
+	'authenticateUserFn': {
+		type: 'function',
+	},
+	'authorizeUserFn': {
+		type: 'function',
+	},
+	'storeInCacheFn': {
+		type: 'function',
+	},
+	'readFromCacheFn': {
+		type: 'function',
+	},
+	'deleteFromCacheFn': {
+		type: 'function',
+	},
+};
+
+// to obtain default values call addDefaultValues
 /** @type {Config} */
-export const defaultConfig = {
+const defaultConfig = {
 	// logging
 	isLogHandledErrors: true,
 	errorLogFn: undefined, // default ./logging/index.js@logError
@@ -125,3 +156,26 @@ export const defaultConfig = {
 	readFromCacheFn: undefined, // required
 	deleteFromCacheFn: undefined, // required
 };
+
+/**
+ * adds default values to your config
+ * @param {Config} config
+ * @return {Config}
+ */
+export function addDefaultValues(config) {
+	const c = Object.assign({}, defaultConfig, config);
+	c.authenticateUserFn ||= authentication.getAuthenticatedUserFn(config),
+	c.authorizeUserFn ||= authorization.getAuthorizeFn(config),
+	c.errorLogFn ||= logging.logError;
+	return c;
+}
+
+
+/**
+ * checks your config for completeness, call addDefaultValues first
+ * @param {Config} config
+ * @return {Config}
+ */
+export function check(config) {
+	return validation.validate(config, CONFIG_SCHEMA, config);
+}

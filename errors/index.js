@@ -21,6 +21,7 @@ export const ERROR_CODES = {
  * @typedef ErrorExtension
  * @property {Boolean} isHandled
  * @property {String | undefined} translationKey
+ * @property {Any | undefined} data
 */
 
 /**
@@ -34,9 +35,10 @@ export const ERROR_CODES = {
  * @param {Boolean} isHandled when used with the error wrapper an
  * unhandled error will be re-thrown after being logged
  * @param {String} translationKey key that can be used for translation
+ * @param {Any} data additional data added to the error
  * @return {SoilError}
  */
-export function create(message, code, isHandled = false, translationKey = undefined) {
+export function create(message, code, isHandled = false, translationKey = undefined, data = undefined) {
 	/** @type {SoilError} */
 	const error = new Error(message);
 	error.code = code.code;
@@ -44,6 +46,9 @@ export function create(message, code, isHandled = false, translationKey = undefi
 	error.isHandled = isHandled;
 	if (translationKey) {
 		error.translationKey = translationKey;
+	}
+	if (data) {
+		error.data = data;
 	}
 	return error;
 }
