@@ -1,4 +1,4 @@
-import * as crypto from './crypto';
+import * as crypto from './crypto.js';
 
 export const CACHE_PREFIX_USER_AUTHENTICATION = 'USER_AUTH_';
 export const CACHE_PREFIX_USER_AUTHENTICATION_SESSIONS = 'USER_AUTH_S_';

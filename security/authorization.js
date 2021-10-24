@@ -1,7 +1,7 @@
 import {
 	create as createError,
 	ERROR_CODES,
-} from '../errors';
+} from '../errors/index.js';
 
 /**
  * @typedef {import("../config").Config} Config

@@ -1,4 +1,4 @@
-import {create as createError, ERROR_CODES} from '../errors';
+import {create as createError, ERROR_CODES} from '../errors/index.js';
 
 /**
  * @typedef {import('../config').Config} Config
@@ -22,14 +22,8 @@ import {create as createError, ERROR_CODES} from '../errors';
  * @return {ValidateFn}
  */
 export function getValidationFn(schema, config) {
-	return async function validate(data) {
-		for (const key of Object.keys(data)) {
-			if (!(key in schema)) {
-				// eslint-disable-next-line max-len
-				throw createError('validation error: data key not found in schema', ERROR_CODES.BAD_REQUEST, true, 'data key not found');
-			}
-		}
-		return data;
+	return (data) => {
+		return validate(data, schema, config);
 	};
 }
 
@@ -54,3 +48,8 @@ export function validate(data, schema, config) {
 	}
 	return validatedData;
 }
+
+export default {
+	getValidationFn,
+	validate,
+};

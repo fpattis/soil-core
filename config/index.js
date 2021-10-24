@@ -1,7 +1,7 @@
-import * as authentication from '../security/authentication';
-import * as authorization from '../security/authorization';
-import * as logging from '../logging';
-import * as validation from '../security/validation';
+import * as authentication from '../security/authentication.js';
+import * as authorization from '../security/authorization.js';
+import * as logging from '../logging/index.js';
+import validation from '../security/validation.js';
 
 /**
  * @typedef Config
@@ -167,6 +167,7 @@ export function addDefaultValues(config) {
 	c.authenticateUserFn ||= authentication.getAuthenticatedUserFn(config),
 	c.authorizeUserFn ||= authorization.getAuthorizeFn(config),
 	c.errorLogFn ||= logging.logError;
+	c.getValidationFn ||= validation.getValidationFn;
 	return c;
 }
 

@@ -4,7 +4,7 @@
   "description": "a secure framework to build web projects with scalability and performance in mind",
   "main": "none",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tape ./tests/**/*.js"
   },
   "repository": {
     "type": "git",

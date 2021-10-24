@@ -2,10 +2,12 @@
  * @typedef { import("../config").Config } Config
  */
 
+import {addDefaultValues} from '../config/index.js';
+
 const cache = {};
 
 /** @type {Config} */
-export const defaultConfig = {
+const testConfig = {
 	// logging
 	isLogHandledErrors: true,
 	errorLogFn: undefined, // default ./logging/index.js@logError
@@ -37,3 +39,17 @@ export const defaultConfig = {
 		delete cache[prefix][key];
 	}, // required
 };
+
+let extendedTestConfig = null;
+
+/**
+ * returns the config used for tests
+ * @return {Config}
+ */
+export function getTestConfig() {
+	if (extendedTestConfig) {
+		return extendedTestConfig;
+	}
+	extendedTestConfig = addDefaultValues(testConfig);
+	return extendedTestConfig;
+}
