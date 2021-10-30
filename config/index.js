@@ -16,7 +16,10 @@ import validation from '../security/validation.js';
  * @property {Number} cryptoTokenLength the length of secure tokens in bytes
  * @property {GetValidationFn} getValidationFn returns a function that validates a schema
  * @property {import("../security/authentication").AuthenticatedUser} authenticateUserFn
+ * @property {import("../security/authentication").CreateToken} createTokenFn
+ * @property {import("../security/authentication").UnauthorizeUser} unauthorizeUserFn
  * @property {import("../security/authorization").AuthorizeUser} authorizeUserFn
+ * @property {Number} userTokenExpiresInMinutes
  *
  * //localization
  * @property {GetTranslationFn} getTranslationFn function returns a function that handles the translation
@@ -89,6 +92,7 @@ import validation from '../security/validation.js';
  * @callback ReadFromCacheFn shall deserialized JSON or other formats properly before returning
  * @param {String} cachePrefix the cache prefix or collection name
  * @param {String | Object} key the key of the value to read
+ * @param {Number} expiresInMinutes refresh token expiration by minutes
  * @param {Config} config the applications config object
  * @returns {Promise<Object | Array>}
  */
@@ -106,6 +110,7 @@ import validation from '../security/validation.js';
  * @param {String} cachePrefix the cache prefix or collection name
  * @param {String | Object} key the key of the value to read
  * @param {Any} value the value to store for the given key
+ * @param {Number} expiresInMinutes refresh token expiration by minutes
  * @param {Config} config the applications config object
  * @returns {Promise}
  */
@@ -149,8 +154,11 @@ const defaultConfig = {
 	// security
 	cryptoTokenLength: 256,
 	getValidationFn: undefined, // required
-	authenticateUserFn: undefined, // default result of ./security/authentication.js@authenticateUserFn
+	authenticateUserFn: undefined, // default result of ./security/authentication.js@getAuthenticatedUserFn
+	createTokenFn: undefined, // default result of ./security/authentication.js@getCreateTokenFn
+	unauthorizeUserFn: undefined, // default result of ./security/authentication.js@getUnauthorizeUserFn
 	authorizeUserFn: undefined, // default result of ./security/authentication.js@getAuthorizeFn
+	userTokenExpiresInMinutes: 30,
 	// cache
 	storeInCacheFn: undefined, // required
 	readFromCacheFn: undefined, // required
@@ -165,6 +173,8 @@ const defaultConfig = {
 export function addDefaultValues(config) {
 	const c = Object.assign({}, defaultConfig, config);
 	c.authenticateUserFn ||= authentication.getAuthenticatedUserFn(config),
+	c.createTokenFn ||= authentication.getCreateTokenFn(config);
+	c.unauthorizeUserFn ||= authentication.getUnauthorizeUserFn(config);
 	c.authorizeUserFn ||= authorization.getAuthorizeFn(config),
 	c.errorLogFn ||= logging.logError;
 	c.getValidationFn ||= validation.getValidationFn;

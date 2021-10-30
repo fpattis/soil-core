@@ -22,11 +22,11 @@ const testConfig = {
 	authenticateUserFn: undefined, // default result of ./security/authentication.js@authenticateUserFn
 	authorizeUserFn: undefined, // default result of ./security/authentication.js@getAuthorizeFn
 	// cache
-	storeInCacheFn: (prefix, key, value, config) => {
+	storeInCacheFn: (prefix, key, value, expiresInMinutes, config) => {
 		const collection = cache[prefix] = cache[prefix] || {};
 		collection[key] = value;
 	}, // required
-	readFromCacheFn: (prefix, key) => {
+	readFromCacheFn: (prefix, key, expiresInMinutes) => {
 		return cache[prefix]?.[key];
 	}, // required
 	deleteFromCacheFn: (prefix, key) => {

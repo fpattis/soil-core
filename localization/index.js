@@ -14,8 +14,8 @@ export async function getTranslationFn(translations, defaultLanguage, config = u
 		return config.getTranslationFn(translations, defaultLanguage, config);
 	}
 	return async function translate(code, languageCode) {
-		const languageTranslations = translations[defaultLanguage];
-		return languageTranslations?.[code]
-        || translations[defaultLanguage]?.[languageCode];
+		return translations[languageCode]?.[code]
+        	|| translations[defaultLanguage]?.[code]
+			|| code;
 	};
 }

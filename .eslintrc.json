@@ -15,6 +15,6 @@
 		"indent": ["error", "tab"],
 		"no-tabs": 0,
 		"operator-linebreak": ["error", "before"],
-		"max-len": ["error", 111]
+		"max-len": ["error", 120]
 	}
 }

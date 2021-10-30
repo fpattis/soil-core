@@ -18,8 +18,7 @@ const DEFAULT_ERROR_FN = (e) => {
  */
 
 /**
- * @typedef {ExecuteBusinessLogic & ExecuteProtectedBusinessLogicExtension}
- * ExecuteProtectedBusinessLogic
+ * @typedef {ExecuteBusinessLogic & ExecuteProtectedBusinessLogicExtension} ExecuteProtectedBusinessLogic
  */
 
 /**
@@ -95,7 +94,7 @@ async function wrapper(fn, jsonSchema, config) {
 			return await fn(...args);
 		} catch (e) {
 			errorLogFn(e, config);
-			await errorHandlerFn(e, ...args);
+			return await errorHandlerFn(e, ...args);
 		}
 	};
 }
