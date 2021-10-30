@@ -132,3 +132,29 @@ tape('endpoint - testing protect function, wrong token', async (t) => {
 		t.equal(e.code, 'UNAUTHORIZED');
 	}
 });
+
+tape('endpoint - testing protect function, no token', async (t) => {
+	/** @type {User} */
+	const user = {
+		ID: 1,
+		groups: ['admin'],
+	};
+	await config.createTokenFn(user);
+	config.errorHandlerFn = (error) => {
+		throw error;
+	};
+	const endpointWrapper = await protect(
+		async (validatedData) => {
+			t.true(false, 'this code (business logic) should not be called, instead an error should be thrown');
+		},
+		validationSchema,
+		['developer'],
+		config,
+	);
+	try {
+		await endpointWrapper(testInputData);
+		t.true(false, 'this code should not be called, instead an error should be thrown');
+	} catch (e) {
+		t.equal(e.code, 'UNAUTHORIZED');
+	}
+});

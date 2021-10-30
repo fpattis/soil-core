@@ -34,7 +34,7 @@ export function getAuthorizeFn(config) {
 		}
 		if (!firstMatchingGroup) {
 			// eslint-disable-next-line max-len
-			throw createError(`authorization: user with id "${user.ID}" has none of the groups "${allowedUserGroups.join(',')}assigned"`, ERROR_CODES.UNAUTHORIZED, true);
+			throw createError(`authorization: user with id "${user.ID}" has none of the groups "${allowedUserGroups.join(',')}" assigned`, ERROR_CODES.UNAUTHORIZED, true, 'user has none of the requested user groups assigned');
 		}
 		return firstMatchingGroup;
 	};

@@ -22,6 +22,7 @@ export const ERROR_CODES = {
  * @property {Boolean} isHandled
  * @property {String | undefined} translationKey
  * @property {Any | undefined} data
+ * @property {String} logID
 */
 
 /**

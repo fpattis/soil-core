@@ -7,11 +7,13 @@
  * logs an Error
  * @param {SoilError} error
  * @param {Config} config
- * @return {undefined}
+ * @return {SoilError}
  */
-export async function logError(error, config) {
+export function logError(error, config) {
 	if (config?.isLogHandledErrors === false && error.isHandled) {
 		return;
 	}
+	error.logID = `${Date.now()}-${Math.random()}`;
 	console.error(error);
+	return error;
 }
