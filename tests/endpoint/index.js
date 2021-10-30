@@ -104,6 +104,7 @@ tape('endpoint - testing protect function, wrong role', async (t) => {
 		t.true(false, 'this code should not be called, instead an error should be thrown');
 	} catch (e) {
 		t.equal(e.code, 'UNAUTHORIZED');
+		t.true(e.message.startsWith('authorization'));
 	}
 });
 
@@ -130,6 +131,7 @@ tape('endpoint - testing protect function, wrong token', async (t) => {
 		t.true(false, 'this code should not be called, instead an error should be thrown');
 	} catch (e) {
 		t.equal(e.code, 'UNAUTHORIZED');
+		t.true(e.message.startsWith('authentication'));
 	}
 });
 
@@ -156,5 +158,6 @@ tape('endpoint - testing protect function, no token', async (t) => {
 		t.true(false, 'this code should not be called, instead an error should be thrown');
 	} catch (e) {
 		t.equal(e.code, 'UNAUTHORIZED');
+		t.true(e.message.startsWith('authentication'));
 	}
 });
