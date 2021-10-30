@@ -144,7 +144,7 @@ const CONFIG_SCHEMA = {
 /** @type {Config} */
 const defaultConfig = {
 	// logging
-	isLogHandledErrors: true,
+	isLogHandledErrors: false,
 	errorLogFn: undefined, // default ./logging/index.js@logError
 	errorHandlerFn: (e) => {
 		throw e;

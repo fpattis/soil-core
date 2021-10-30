@@ -9,7 +9,7 @@ const cache = {};
 /** @type {Config} */
 const testConfig = {
 	// logging
-	isLogHandledErrors: true,
+	isLogHandledErrors: false,
 	errorLogFn: undefined, // default ./logging/index.js@logError
 	errorHandlerFn: (e) => {
 		throw e;
