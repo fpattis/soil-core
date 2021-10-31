@@ -1,4 +1,8 @@
+/* eslint-disable max-len */
 
+export const DEFAULT_ERROR_FN = (e) => {
+	throw e;
+};
 
 export const ERROR_CODES = {
 	UNAUTHORIZED: {
@@ -33,7 +37,7 @@ export const ERROR_CODES = {
  * creates a new error object
  * @param {String} message the error message
  * @param {ErrorCode} code a code that uniquely identifies an error
- * @param {Boolean} isHandled when used with the default logger, a handled error will not be logged
+ * @param {Boolean} isHandled when used with the default logger, a handled error will not be logged, when used with the default error handler, a non handled error will be re-thrown
  * @param {String} translationKey key that can be used for translation
  * @param {Any} data additional data added to the error
  * @return {SoilError}

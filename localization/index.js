@@ -15,7 +15,7 @@ export async function getTranslationFn(translations, defaultLanguage, config = u
 	}
 	return async function translate(code, languageCode) {
 		return translations[languageCode]?.[code]
-        	|| translations[defaultLanguage]?.[code]
+			|| translations[defaultLanguage]?.[code]
 			|| code;
 	};
 }

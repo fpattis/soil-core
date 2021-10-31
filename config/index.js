@@ -2,6 +2,7 @@ import * as authentication from '../security/authentication.js';
 import * as authorization from '../security/authorization.js';
 import * as logging from '../logging/index.js';
 import validation from '../security/validation.js';
+import {DEFAULT_ERROR_FN} from '../errors';
 
 /**
  * @typedef Config
@@ -146,9 +147,7 @@ const defaultConfig = {
 	// logging
 	isLogHandledErrors: false,
 	errorLogFn: undefined, // default ./logging/index.js@logError
-	errorHandlerFn: (e) => {
-		throw e;
-	},
+	errorHandlerFn: DEFAULT_ERROR_FN, // rethrows error
 	// localization
 	getTranslationFn: undefined,
 	// security

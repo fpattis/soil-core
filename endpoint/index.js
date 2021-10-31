@@ -1,7 +1,3 @@
-const DEFAULT_ERROR_FN = (e) => {
-	throw e;
-};
-
 /**
  * @typedef { import("../config").Config } Config
  */
@@ -86,7 +82,7 @@ export async function wrap(fn, jsonSchema, config) {
  */
 async function wrapper(fn, jsonSchema, config) {
 	const validate = await config.getValidationFn(jsonSchema, config);
-	const errorHandlerFn = config.errorHandlerFn || DEFAULT_ERROR_FN;
+	const errorHandlerFn = config.errorHandlerFn;
 	const errorLogFn = config.errorLogFn;
 	return async (...args) => {
 		try {
