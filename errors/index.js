@@ -33,8 +33,7 @@ export const ERROR_CODES = {
  * creates a new error object
  * @param {String} message the error message
  * @param {ErrorCode} code a code that uniquely identifies an error
- * @param {Boolean} isHandled when used with the error wrapper an
- * unhandled error will be re-thrown after being logged
+ * @param {Boolean} isHandled when used with the default logger, a handled error will not be logged
  * @param {String} translationKey key that can be used for translation
  * @param {Any} data additional data added to the error
  * @return {SoilError}

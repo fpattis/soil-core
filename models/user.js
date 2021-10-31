@@ -8,10 +8,9 @@
  * returns a random data filled user
  * @return {User}
  */
-export async function getMock({groups, sessionStart}) {
+export async function getMock({groups}) {
 	return {
 		ID: Math.random(),
 		groups: groups || ['group1', 'group2'],
-		sessionStart: sessionStart || undefined,
 	};
 }

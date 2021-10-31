@@ -45,6 +45,7 @@ tape('endpoint - testing wrap function', async (t) => {
 });
 
 tape('endpoint - test error handler', async (t) => {
+	t.plan(2);
 	config.errorHandlerFn = (error) => {
 		t.true(error);
 		return error;

@@ -181,7 +181,6 @@ export function addDefaultValues(config) {
 	return c;
 }
 
-
 /**
  * checks your config for completeness, call addDefaultValues first
  * @param {Config} config
