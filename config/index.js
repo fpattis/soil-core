@@ -3,7 +3,12 @@ import * as authentication from '../security/authentication.js';
 import * as authorization from '../security/authorization.js';
 import * as logging from '../logging/index.js';
 import validation from '../security/validation.js';
-import {DEFAULT_ERROR_FN} from '../errors';
+import {DEFAULT_ERROR_FN} from '../errors/index.js';
+
+export default {
+	addDefaultValues,
+	check,
+};
 
 /**
  * @typedef Config
