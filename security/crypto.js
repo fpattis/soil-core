@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import sodium from 'libsodium-wrappers';
+import hash from './password_hash.js';
 
 const TOKEN_LENGTH = 256;
 
@@ -24,39 +24,30 @@ export async function token(config = undefined) {
 }
 
 /**
- * generates a hash to store in your db, the returned passwordHash can then be checked using isPasswordCorrect function
- * @param {String} password user password input
+ * sets up workers
  * @param {Config} config
- * @return {String} to store in your db
+ * @return {Promise}
  */
-export async function hashPassword(password, config = undefined) {
-	await sodium.ready;
-	const memoryLimit = config?.passwordCheckMemoryLimitBytes || sodium.crypto_pwhash_MEMLIMIT_MODERATE;
-	const operationsLimit = config?.passwordCheckOperationsLimit || sodium.crypto_pwhash_OPSLIMIT_MODERATE;
-	const hash = sodium.crypto_pwhash_str(password, operationsLimit, memoryLimit);
-	return hash;
+export async function setup(config = undefined) {
+	return Promise.all([
+		hash.setup(config),
+	]);
 }
 
 /**
- * checks if the user provided password is correct
- * @param {String} password
- * @param {String} passwordHash
- * @return {Boolean}
+ * clears workers
+ * @return {Promise}
  */
-export async function isPasswordCorrect(password, passwordHash) {
-	await sodium.ready;
-	return sodium.crypto_pwhash_str_verify(passwordHash, password);
+export async function shutdown() {
+	return Promise.all([
+		hash.shutdown(),
+	]);
 }
 
 export default {
+	setup,
+	shutdown,
 	token,
-	hashPassword,
-	isPasswordCorrect,
+	hashPassword: hash.hashPassword,
+	isPasswordCorrect: hash.isPasswordCorrect,
 };
-
-// (async function() {
-// 	const hash = await hashPassword('test', false, false);
-// 	console.log(hash);
-// 	console.log(await isPasswordCorrect('test', hash));
-// 	console.log(await isPasswordCorrect('test1', hash));
-// })();
