@@ -1,5 +1,12 @@
 /* eslint-disable max-len */
 
+export default {
+	DEFAULT_ERROR_FN,
+	ERROR_CODES,
+	create,
+	createFromError,
+};
+
 export const DEFAULT_ERROR_FN = (e) => {
 	throw e;
 };
@@ -8,14 +15,17 @@ export const ERROR_CODES = {
 	UNAUTHORIZED: {
 		code: 'UNAUTHORIZED',
 		httpStatusCode: 401,
+		httpStatusMessage: 'Unauthorized',
 	},
 	BAD_REQUEST: {
 		code: 'BAD_REQUEST',
 		httpStatusCode: 400,
+		httpStatusMessage: 'Bad Request',
 	},
 	INTERNAL_SERVER_ERROR: {
 		code: 'INTERNAL_SERVER_ERROR',
 		httpStatusCode: 500,
+		httpStatusMessage: 'Internal Server Error',
 	},
 };
 

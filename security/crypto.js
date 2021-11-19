@@ -3,10 +3,18 @@ import hash from './password_hash.js';
 
 const TOKEN_LENGTH = 256;
 
+export default {
+	setup,
+	shutdown,
+	token,
+	hashPassword: hash.hashPassword,
+	isPasswordCorrect: hash.isPasswordCorrect,
+};
+
 /** @typedef {import('../config').Config} Config */
 
 /**
- * generates a crypto token
+ * generates a crypto random token
  * @param {Config} config
  * @return {Promise<String>}
  */
@@ -43,11 +51,3 @@ export async function shutdown() {
 		hash.shutdown(),
 	]);
 }
-
-export default {
-	setup,
-	shutdown,
-	token,
-	hashPassword: hash.hashPassword,
-	isPasswordCorrect: hash.isPasswordCorrect,
-};

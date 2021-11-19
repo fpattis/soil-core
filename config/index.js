@@ -3,6 +3,7 @@ import * as authentication from '../security/authentication.js';
 import * as authorization from '../security/authorization.js';
 import * as logging from '../logging/index.js';
 import validation from '../security/validation.js';
+import localization from '../localization/index.js';
 import {DEFAULT_ERROR_FN} from '../errors/index.js';
 
 export default {
@@ -17,7 +18,7 @@ export default {
  * @property {Boolean} isLogHandledErrors tells if a handled error gets
  * logged when it occurs
  * @property {ErrorLogFn} errorLogFn gets called when an error occurs
- * @property {ErrorHandlerFn} errorHandlerFn gets when an error occurs in an endpoint/index.js function
+ * @property {ErrorHandlerFn} errorHandlerFn gets called when an error occurs in an endpoint/index.js function
  *
  * //security
  * @property {Number} cryptoTokenLength the length of secure tokens in bytes
@@ -159,10 +160,10 @@ const defaultConfig = {
 	errorLogFn: undefined, // default ./logging/index.js@logError
 	errorHandlerFn: DEFAULT_ERROR_FN, // rethrows error
 	// localization
-	getTranslationFn: undefined,
+	getTranslationFn: undefined, // default ./localization/index.js@getTranslationFn
 	// security
 	cryptoTokenLength: 256,
-	getValidationFn: undefined, // required
+	getValidationFn: undefined, // default ./security/validation.js@getValidationFn
 	authenticateUserFn: undefined, // default result of ./security/authentication.js@getAuthenticatedUserFn
 	createTokenFn: undefined, // default result of ./security/authentication.js@getCreateTokenFn
 	unauthorizeUserFn: undefined, // default result of ./security/authentication.js@getUnauthorizeUserFn
@@ -189,6 +190,7 @@ export function addDefaultValues(config) {
 	c.authorizeUserFn ||= authorization.getAuthorizeFn(config),
 	c.errorLogFn ||= logging.logError;
 	c.getValidationFn ||= validation.getValidationFn;
+	c.getTranslationFn ||= localization.getTranslationFn;
 	return c;
 }
 

@@ -2,6 +2,10 @@
 /** @typedef {import('../config').Config} Config */
 /** @typedef {import('../config').TranslationFn} TranslationFn */
 
+export default {
+	getTranslationFn,
+};
+
 /**
  * returns the translation function
  * @param {Objects} translations
