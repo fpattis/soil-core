@@ -1,5 +1,6 @@
 import genericPool from 'generic-pool';
 import passwordHashWorker from './password_hash_worker.js';
+import os from 'os';
 
 /** @type {genericPool.Pool} */
 let workerPool = null;
@@ -28,8 +29,8 @@ export function setup(config = undefined) {
 	};
 
 	const options = {
-		min: config.passwordHashWorkerAmountMinimum,
-		max: config.passwordHashWorkerAmountMaximum,
+		min: config?.passwordHashWorkerAmountMinimum || 2,
+		max: config?.passwordHashWorkerAmountMaximum || Math.floor(os.cpus().length / 2),
 	};
 
 	workerPool = genericPool.createPool(factory, options);

@@ -1,12 +1,5 @@
 /* eslint-disable max-len */
 
-export default {
-	DEFAULT_ERROR_FN,
-	ERROR_CODES,
-	create,
-	createFromError,
-};
-
 export const DEFAULT_ERROR_FN = (e) => {
 	throw e;
 };
@@ -42,6 +35,13 @@ export const ERROR_CODES = {
 		httpStatusCode: 500,
 		httpStatusMessage: 'Internal Server Error',
 	},
+};
+
+export default {
+	DEFAULT_ERROR_FN,
+	ERROR_CODES,
+	create,
+	createFromError,
 };
 
 /**

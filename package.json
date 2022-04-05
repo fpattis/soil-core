@@ -1,6 +1,6 @@
 {
   "name": "soil-core-framework",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "a core-framework to build frameworks with security, scalability and performance in mind",
   "main": "index.js",
   "scripts": {

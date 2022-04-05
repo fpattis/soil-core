@@ -28,10 +28,10 @@ export default {
  * @property {import("../security/authentication").UnauthorizeUser} unauthorizeUserFn
  * @property {import("../security/authorization").AuthorizeUser} authorizeUserFn
  * @property {Number} userTokenExpiresInMinutes default 30 minutes
- * @property {Number} passwordCheckMemoryLimitBytes reasonable default set, impacts hash execution time
+ * @property {Number} passwordCheckMemoryLimitBytes reasonable default set, impacts hash execution time (default is moderate - https://libsodium.gitbook.io/doc/password_hashing/default_phf)
  * @property {Number} passwordCheckOperationsLimit reasonable default set, impacts hash execution time
- * @property {Number} passwordHashWorkerAmountMinimum minimal amount of password hash workers that will start on server startup
- * @property {Number} passwordHashWorkerAmountMaximum minimal amount of password hash workers will start when needed, adapt this and the previous value to your CPU cores
+ * @property {Number} passwordHashWorkerAmountMinimum minimal amount of password hash workers that will start on server startup, default = 2
+ * @property {Number} passwordHashWorkerAmountMaximum minimal amount of password hash workers will start when needed, adapt this and the previous value to your CPU cores, default = cpu cores / 2
  *
  * //localization
  * @property {GetTranslationFn} getTranslationFn function returns a function that handles the translation
@@ -170,8 +170,6 @@ const defaultConfig = {
 	unauthorizeUserFn: undefined, // default result of ./security/authentication.js@getUnauthorizeUserFn
 	authorizeUserFn: undefined, // default result of ./security/authentication.js@getAuthorizeFn
 	userTokenExpiresInMinutes: 30,
-	passwordHashWorkerAmountMinimum: 2,
-	passwordHashWorkerAmountMaximum: 4,
 	// cache
 	storeInCacheFn: undefined, // required
 	readFromCacheFn: undefined, // required
