@@ -11,6 +11,21 @@ export const DEFAULT_ERROR_FN = (e) => {
 	throw e;
 };
 
+/**
+ * @typedef {{
+ * 		code: String,
+ * 		httpStatusCode: Number,
+ * 		httpStatusMessage: String,
+ * }} ErrorCode
+ */
+
+/**
+ * @typedef {{
+ * 		[index: String]: ErrorCode,
+ * }} ErrorCodes
+ */
+
+/** @type {ErrorCodes} */
 export const ERROR_CODES = {
 	UNAUTHORIZED: {
 		code: 'UNAUTHORIZED',

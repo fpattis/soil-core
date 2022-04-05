@@ -59,6 +59,7 @@ export default {
 /**
  * @callback ValidateFn
  * @param {Object} data the data  to validate
+ * @param {Any} arguments the language code
  * @return {Promise<Object>} the validated data
  */
 
@@ -94,7 +95,7 @@ export default {
 
 /**
  * @callback TranslationFn
- * @param {String} code the code of the translation we are looking for
+ * @param {String} translationKey the key of the translation we are looking for
  * @param {String} languageCode the language for the code we are looking for
  */
 

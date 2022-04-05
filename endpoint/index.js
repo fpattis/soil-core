@@ -86,7 +86,7 @@ async function wrapper(fn, jsonSchema, config) {
 	const errorLogFn = config.errorLogFn;
 	return async (...args) => {
 		try {
-			args[0] = await validate(args[0]);
+			args[0] = await validate(...args);
 			return await fn(...args);
 		} catch (e) {
 			errorLogFn(e, config);
